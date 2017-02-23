@@ -50,7 +50,7 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.4.0'
     compile 'com.dzaitsev.rxviper:rxviper:1.0.0-rc1'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
-
+    compile 'de.hdodenhof:circleimageview:1.2.1'
     //firebase
 
     //Authentication

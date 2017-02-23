@@ -29,32 +29,123 @@
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
         android:textColor="@color/red_chat" />
 
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/sign_in_button"
+    <LinearLayout
+        android:id="@+id/signed_in"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="32dp"
-        android:layout_marginTop="56dp"
-        app:buttonSize="wide" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="32dp"
+            android:layout_marginTop="56dp"
+            app:buttonSize="wide" />
 
-       <View style="@style/frame_divider"/>
+        <View style="@style/frame_divider" />
 
         <TextView
-            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_margin="16dp"
             android:text="@string/i_d_rather_use_my_own_email_address" />
 
-    <Button
+        <Button
+            android:id="@+id/sign_up_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:foreground="?attr/selectableItemBackground"
+            android:text="@string/sign_up"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium.Inverse" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/signed_out"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/sign_up"
-        android:foreground="?attr/selectableItemBackground"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium.Inverse"
-        android:background="@color/colorPrimary"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="16dp"
+            android:text="@string/you_are_signed_in" />
+
+        <Button
+            android:id="@+id/sign_out_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@color/colorPrimary"
+            android:foreground="?attr/selectableItemBackground"
+            android:text="@string/sign_out"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium.Inverse" />
+
+        <Button
+            android:id="@+id/delete_account_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@color/colorAccent"
+            android:foreground="?attr/selectableItemBackground"
+            android:text="@string/delete_account"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium.Inverse" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:text="@string/user_profile" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/user_profile_picture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="16dp"
+                android:contentDescription="@string/profile_picture_content_desc"
+                android:background="@drawable/empty_circle_background_account" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/user_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textIsSelectable="true" />
+
+                <TextView
+                    android:id="@+id/user_display_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textIsSelectable="true" />
+
+                <TextView
+                    android:id="@+id/user_enabled_providers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textIsSelectable="true" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>
