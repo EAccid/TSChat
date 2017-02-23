@@ -1,4 +1,6 @@
 <resources>
-    <string name="app_name">TSChat</string>
+    <string name="app_name">TS Chat</string>
     <string name="default_client_id">246283747835-e3vsj2p15pb55sco6mbnaminfnsp2qe5.apps.googleusercontent.com</string>
+    <string name="i_d_rather_use_my_own_email_address">I\'d rather use my own email address</string>
+    <string name="sign_up">Sign up</string>
 </resources>

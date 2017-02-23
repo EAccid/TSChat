@@ -13,10 +13,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 
@@ -26,7 +25,6 @@ import butterknife.ButterKnife;
 public class AuthActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     private final int RC_SIGN_IN = 9001;
-    ;
     private final String LOG_TAG = "FirebaseAuth";
 
     @BindView(R.id.sign_in_button)
@@ -48,7 +46,7 @@ public class AuthActivity extends AppCompatActivity implements GoogleApiClient.O
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-        mSignInButton.setSize(SignInButton.SIZE_ICON_ONLY);
+        mSignInButton.setSize(SignInButton.SIZE_WIDE);
         mSignInButton.setOnClickListener(v -> signIn());
     }
 
