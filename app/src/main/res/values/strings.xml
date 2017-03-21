@@ -8,4 +8,6 @@
     <string name="you_are_signed_in">You are signed in!</string>
     <string name="delete_account">DELETE ACCOUNT</string>
     <string name="user_profile">User profile:</string>
+    <string name="last_message">last message</string>
+    <string name="user_name">user name</string>
 </resources>
