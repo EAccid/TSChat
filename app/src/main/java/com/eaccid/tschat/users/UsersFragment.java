@@ -1,4 +1,4 @@
-package com.eaccid.tschat;
+package com.eaccid.tschat.users;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.eaccid.tschat.R;
+import com.eaccid.tschat.entity.User;
+import com.eaccid.tschat.semantics.ImageViewLoader;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;

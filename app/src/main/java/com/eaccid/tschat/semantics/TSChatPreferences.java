@@ -1,4 +1,4 @@
-package com.eaccid.tschat;
+package com.eaccid.tschat.semantics;
 
 public class TSChatPreferences {
     public static final String INSTANCE_ID_TOKEN_RETRIEVED = "id_token_retrieved";

@@ -1,4 +1,4 @@
-package com.eaccid.tschat;
+package com.eaccid.tschat.entity;
 
 public class User {
 

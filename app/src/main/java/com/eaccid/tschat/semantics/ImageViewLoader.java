@@ -1,10 +1,11 @@
-package com.eaccid.tschat;
+package com.eaccid.tschat.semantics;
 
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.eaccid.tschat.R;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;

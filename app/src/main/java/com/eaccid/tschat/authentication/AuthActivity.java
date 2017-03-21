@@ -1,4 +1,4 @@
-package com.eaccid.tschat;
+package com.eaccid.tschat.authentication;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.eaccid.tschat.semantics.ImageViewLoader;
+import com.eaccid.tschat.MainActivity;
+import com.eaccid.tschat.R;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ui.ResultCodes;
 import com.google.android.gms.auth.api.Auth;
@@ -43,12 +45,6 @@ public class AuthActivity extends AppCompatActivity implements GoogleApiClient.O
     private Class mClassToBack;
     @BindView(R.id.sign_in_button)
     SignInButton mSignInButton;
-    @BindView(R.id.sign_up_button)
-    Button mSignUpButton;
-    @BindView(R.id.sign_out_button)
-    Button mSignOutButton;
-    @BindView(R.id.delete_account_button)
-    Button mDeleteAccountButton;
     @BindView(R.id.signed_in)
     View signed_in_root_view;
     @BindView(R.id.signed_out)
