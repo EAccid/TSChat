@@ -12,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.IdpResponse;
 import com.firebase.ui.auth.ui.ResultCodes;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -22,11 +21,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.GoogleApiClient;
-
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,9 +34,8 @@ import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AuthActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
-
-    private final int RC_SIGN_IN = 9001;
     private static final int RC_SIGN_UP = 123;
+    private final int RC_SIGN_IN = 9001;
     private final String LOG_TAG = "AuthActivity";
     private FirebaseAuth mFirebaseAuth;
     private GoogleApiClient mGoogleApiClient;
@@ -209,18 +203,13 @@ public class AuthActivity extends AppCompatActivity implements GoogleApiClient.O
     private void deleteAccount() {
         AuthUI.getInstance()
                 .delete(this)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(AuthActivity.this, "Deletion succeeded", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(AuthActivity.this, "Deletion failed", Toast.LENGTH_SHORT).show();
-                        }
-
-                        startSucceedAuthAction();
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(AuthActivity.this, "Deletion succeeded", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(AuthActivity.this, "Deletion failed", Toast.LENGTH_SHORT).show();
                     }
-
+                    startSucceedAuthAction();
                 });
     }
 
@@ -238,11 +227,11 @@ public class AuthActivity extends AppCompatActivity implements GoogleApiClient.O
         FirebaseUser user = mFirebaseAuth.getCurrentUser();
         if (user == null) return;
         if (user.getPhotoUrl() != null) {
-            new ImageViewManager()
+            new ImageViewLoader()
                     .loadPictureFromUrl(mUserProfilePicture,
                             user.getPhotoUrl().toString(),
-                            R.drawable.empty_circle_background_account,
-                            R.drawable.empty_circle_background_account,
+                            ImageViewLoader.EMPTY_ACCOUNT_RES_ID,
+                            ImageViewLoader.EMPTY_ACCOUNT_RES_ID,
                             true
                     );
         }

@@ -18,11 +18,9 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         if (FirebaseAuth.getInstance().getCurrentUser() == null)
             navigateToAuthActivity();
-
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.activity_main, new UsersFragment(), "users")
                 .commit();
-
     }
 
     @OnClick(R.id.temp_button)
