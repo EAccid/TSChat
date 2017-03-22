@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="80dp"
     android:clickable="true"
-    android:foreground="?attr/selectableItemBackground">
+    android:foreground="?attr/selectableItemBackground"
+    android:id="@+id/user_layout">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/photo"

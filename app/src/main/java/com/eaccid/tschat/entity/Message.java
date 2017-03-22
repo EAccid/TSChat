@@ -2,6 +2,7 @@ package com.eaccid.tschat.entity;
 
 public class Message {
     private String id;
+    private String uid;
     private String text;
     private String name;
     private String photoUrl;
@@ -10,7 +11,8 @@ public class Message {
     public Message() {
     }
 
-    public Message(String text, String name, String photoUrl, String imageUrl) {
+    public Message(String text, String uid, String name, String photoUrl, String imageUrl) {
+        this.uid = uid;
         this.text = text;
         this.name = name;
         this.photoUrl = photoUrl;
@@ -23,6 +25,14 @@ public class Message {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getText() {
@@ -61,10 +71,11 @@ public class Message {
     public String toString() {
         return "Message{" +
                 "id='" + id + '\'' +
+                ", uid='" + uid + '\'' +
                 ", text='" + text + '\'' +
                 ", name='" + name + '\'' +
                 ", photoUrl='" + photoUrl + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
                 '}';
     }
-
 }

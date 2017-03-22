@@ -19,8 +19,9 @@
     <string name="contacts_permission_rationale">Access to account information is required to sign in.</string>
     <string name="invite_menu_label">Invite</string>
     <string name="invitation_message">Please join me for a TSChat</string>
-    <string name="invitation_cta">Call to action</string>
+    <string name="invitation_cta">Find data</string>
     <string name="invitation_title">TSChat Invite</string>
     <string name="send">SEND</string>
+    <string name="deep_link">https://github.com/EAccid/TSChat</string>
 
 </resources>

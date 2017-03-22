@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,9 +16,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.eaccid.tschat.R;
 import com.eaccid.tschat.entity.Message;
+import com.eaccid.tschat.semantics.ImageViewLoader;
 import com.eaccid.tschat.semantics.TSChatPreferences;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.appinvite.AppInviteInvitation;
@@ -27,6 +30,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.firebase.storage.FirebaseStorage;
@@ -76,11 +80,17 @@ public class ConversationScreen extends AppCompatActivity {
 
         mLinearLayoutManager = new LinearLayoutManager(this);
         mLinearLayoutManager.setStackFromEnd(true);
+
+        String uidToConnectWith = getIntent().getStringExtra("chat_id");
+        Query messagesQuery = mFirebaseDatabaseReference
+                .child(MESSAGES_CHILD)
+                .child(mFirebaseUser.getUid())
+                .child(uidToConnectWith);
         mFirebaseMessageAdapter = new FirebaseRecyclerAdapter<Message, MessageViewHolder>(
                 Message.class,
                 R.layout.item_message,
                 MessageViewHolder.class,
-                mFirebaseDatabaseReference.child(MESSAGES_CHILD)) {
+                messagesQuery) {
 
             @Override
             protected Message parseSnapshot(DataSnapshot snapshot) {
@@ -95,9 +105,62 @@ public class ConversationScreen extends AppCompatActivity {
             protected void populateViewHolder(final MessageViewHolder viewHolder,
                                               Message message, int position) {
                 mProgressBar.setVisibility(ProgressBar.INVISIBLE);
-                //todo populateViewHolder
+                if (message.getText() != null) {
+                    viewHolder.text.setText(message.getText());
+                    viewHolder.text.setVisibility(TextView.VISIBLE);
+                    viewHolder.photo.setVisibility(ImageView.GONE);
+                } else {
+                    String imageUrl = message.getImageUrl();
+                    if (imageUrl.startsWith("gs://")) {
+                        StorageReference storageReference = FirebaseStorage.getInstance()
+                                .getReferenceFromUrl(imageUrl);
+                        storageReference.getDownloadUrl().addOnCompleteListener(
+                                task -> {
+                                    if (task.isSuccessful()) {
+                                        String downloadUrl = task.getResult().toString();
+                                        new ImageViewLoader().loadPictureFromUrl(
+                                                viewHolder.image,
+                                                downloadUrl,
+                                                ImageViewLoader.EMPTY_ACCOUNT_RES_ID,
+                                                ImageViewLoader.EMPTY_ACCOUNT_RES_ID,
+                                                true
+                                        );
+                                    } else {
+                                        Log.w(TAG, "Getting download url was not successful.",
+                                                task.getException());
+                                    }
+                                });
+                    } else {
+                        new ImageViewLoader().loadPictureFromUrl(
+                                viewHolder.image,
+                                message.getImageUrl(),
+                                ImageViewLoader.EMPTY_ACCOUNT_RES_ID,
+                                ImageViewLoader.EMPTY_ACCOUNT_RES_ID,
+                                true
+                        );
+                    }
+                    viewHolder.image.setVisibility(ImageView.VISIBLE);
+                    viewHolder.text.setVisibility(TextView.GONE);
+                }
+
+                viewHolder.name.setText(message.getName());
+                viewHolder.photo.setVisibility(ImageView.VISIBLE);
+                if (message.getPhotoUrl() == null) {
+                    viewHolder.photo.setImageDrawable(ContextCompat.getDrawable(ConversationScreen.this,
+                            R.drawable.empty_circle_background_account));
+                } else {
+                    new ImageViewLoader().loadPictureFromUrl(
+                            viewHolder.photo,
+                            message.getPhotoUrl(),
+                            ImageViewLoader.EMPTY_ACCOUNT_RES_ID,
+                            ImageViewLoader.EMPTY_ACCOUNT_RES_ID,
+                            true
+                    );
+                }
             }
+
         };
+
         mFirebaseMessageAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
@@ -160,9 +223,13 @@ public class ConversationScreen extends AppCompatActivity {
 
         mSendButton = (Button) findViewById(R.id.sendButton);
         mSendButton.setOnClickListener(view -> {
-            Message message = new Message(mMessageEditText.getText().toString(), mUsername,
-                    mPhotoUrl, null);
-            mFirebaseDatabaseReference.child(MESSAGES_CHILD).push().setValue(message);
+            Message message = new Message(mMessageEditText.getText().toString(), mFirebaseUser.getUid(), mUsername, mPhotoUrl, null);
+            mFirebaseDatabaseReference
+                    .child(MESSAGES_CHILD)
+                    .child(mFirebaseUser.getUid())
+                    .child(uidToConnectWith)
+                    .push()
+                    .setValue(message);
             mMessageEditText.setText("");
             mFirebaseAnalytics.logEvent(MESSAGE_SENT_EVENT, null);
         });
@@ -198,7 +265,7 @@ public class ConversationScreen extends AppCompatActivity {
                 if (data != null) {
                     final Uri uri = data.getData();
                     Log.d(TAG, "Uri: " + uri.toString());
-                    Message tempMessage = new Message(null, mUsername, mPhotoUrl, LOADING_IMAGE_URL);
+                    Message tempMessage = new Message(null, mFirebaseUser.getUid(), mUsername, mPhotoUrl, LOADING_IMAGE_URL);
                     mFirebaseDatabaseReference.child(MESSAGES_CHILD).push()
                             .setValue(tempMessage, (databaseError, databaseReference) -> {
                                 if (databaseError == null) {
@@ -240,9 +307,9 @@ public class ConversationScreen extends AppCompatActivity {
         storageReference.putFile(uri).addOnCompleteListener(ConversationScreen.this, task -> {
             if (task.isSuccessful()) {
                 Message message =
-                        new Message(null, mUsername, mPhotoUrl,
-                                task.getResult().getMetadata().getDownloadUrl()
-                                        .toString());
+                        new Message(
+                                null, mFirebaseUser.getUid(), mUsername, mPhotoUrl, task.getResult().getMetadata().getDownloadUrl().toString()
+                        );
                 mFirebaseDatabaseReference.child(MESSAGES_CHILD).child(key)
                         .setValue(message);
             } else {

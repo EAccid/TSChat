@@ -19,7 +19,7 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.message_text)
     TextView text;
     @BindView(R.id.photo)
-    CircleImageView messengerImageView;
+    CircleImageView photo;
 
     public MessageViewHolder(View v) {
         super(v);
