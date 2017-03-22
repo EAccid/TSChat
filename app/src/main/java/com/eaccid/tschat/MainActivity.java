@@ -1,6 +1,7 @@
 package com.eaccid.tschat;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -75,7 +76,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private void sendInvitation() {
         Intent intent = new AppInviteInvitation.IntentBuilder(getString(R.string.invitation_title))
                 .setMessage(getString(R.string.invitation_message))
-                .setCallToActionText(getString(R.string.invitation_cta))
+                .setEmailHtmlContent("<html><body>" +
+                        "<p>\"<a href=\"https://drive.google.com/open?id=0B_sUR3xFd0NQUlppbHJ5ZUJNZFk\">Install </a>\" this application!</p>" +
+                        "<p align=\"center\"> <img src=\"https://github.com/EAccid/TSChat/raw/master/assets/auth_activity.jpg\" width=\"216\" height=\"384\"/> </p>" +
+                        "<body></html>")
+                .setEmailSubject("Please join me for a TSChat")
                 .build();
         startActivityForResult(intent, REQUEST_INVITE);
     }
