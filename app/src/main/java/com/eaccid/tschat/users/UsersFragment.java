@@ -1,5 +1,6 @@
 package com.eaccid.tschat.users;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.widget.ProgressBar;
 
 import com.eaccid.tschat.R;
 import com.eaccid.tschat.entity.User;
+import com.eaccid.tschat.messages.ConversationScreen;
 import com.eaccid.tschat.semantics.ImageViewLoader;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
@@ -87,9 +89,18 @@ public class UsersFragment extends Fragment {
                             true
                     );
                 }
+                viewHolder.itemView.setOnClickListener(v -> {
+                    navigateToMessages(user.getUid());
+                });
             }
         };
         mRecyclerView.setAdapter(mFirebaseUserAdapter);
+    }
+
+    private void navigateToMessages(String uid) {
+        Intent intent = new Intent(getActivity(), ConversationScreen.class);
+        intent.putExtra("chat_id", uid);
+        startActivity(intent);
     }
 
 }
