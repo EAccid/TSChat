@@ -12,12 +12,14 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.eaccid.tschat.MapsActivity;
 import com.eaccid.tschat.R;
 import com.eaccid.tschat.entity.Message;
 import com.eaccid.tschat.semantics.ImageViewLoader;
@@ -157,6 +159,10 @@ public class ConversationScreen extends AppCompatActivity {
                             true
                     );
                 }
+
+                viewHolder.photo.setOnClickListener(v -> {
+                    navigateToMapsActivity();
+                });
             }
 
         };
@@ -233,6 +239,11 @@ public class ConversationScreen extends AppCompatActivity {
             mMessageEditText.setText("");
             mFirebaseAnalytics.logEvent(MESSAGE_SENT_EVENT, null);
         });
+    }
+
+    private void navigateToMapsActivity() {
+        Intent intent = new Intent(this, MapsActivity.class);
+        startActivity(intent);
     }
 
     // Fetch the config to determine the allowed length of messages.

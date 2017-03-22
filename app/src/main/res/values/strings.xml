@@ -23,5 +23,6 @@
     <string name="invitation_title">TSChat Invite</string>
     <string name="send">SEND</string>
     <string name="deep_link">https://github.com/EAccid/TSChat</string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>
